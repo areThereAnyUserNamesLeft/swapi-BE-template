@@ -1,0 +1,5 @@
+database/json-to-go.js
+database/database/data/*
+database/database/structs/*
+models/json/*
+models/structs/*

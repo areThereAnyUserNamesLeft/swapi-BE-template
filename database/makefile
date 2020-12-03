@@ -1,5 +1,13 @@
-mongo-docker: 
+docker-swapi: 
 	docker run -d -p 27017-27019:27017-27019 --name swapi mongo
+
+docker-stop:
+	docker stop swapi
+
+docker-rm:
+	docker rm swapi
+
+docker-clean: docker-stop docker-rm
 
 install-json-to-go:
 	curl "https://raw.githubusercontent.com/mholt/json-to-go/master/json-to-go.js" --output "json-to-go.js" ; 
@@ -7,7 +15,7 @@ install-json-to-go:
 
 fetch-models:
 	for V in films people planets species starships vehicles ; do \
-	curl "https://raw.githubusercontent.com/Juriy/swapi/master/resources/schemas/$$V.json" --output "models/json/$$V.json" ; \
+	curl "https://raw.githubusercontent.com/areThereAnyUserNamesLeft/swapi/master/resources/schemas/$$V.json" --output "models/json/$$V.json" ; \
 	done;  
 
 clean-models:
@@ -27,7 +35,7 @@ refresh-models: clean-models fetch-models convert-models
 
 fetch-data:
 	for V in films people planets species starships vehicles ; do \
-	curl "https://raw.githubusercontent.com/Juriy/swapi/master/resources/fixtures/$$V.json" --output "database/data/$$V.json" ; \
+	curl "https://raw.githubusercontent.com/areThereAnyUserNamesLeft/swapi/master/resources/fixtures/$$V.json" --output "database/data/$$V.json" ; \
 	done; \
 
 convert-data:
@@ -39,8 +47,21 @@ convert-data:
 	go fmt "database/structs/$$V.go"; \
 	done; \
 
+clean-time:
+	sed -i 's/import "time"//g' "database/structs/vehicles.go"; \
+	sed -i 's/import "time"//g' "database/structs/starships.go"; \
+	go fmt "database/structs/vehicles.go" "database/structs/starships.go" \
+
 clean-data:
 	rm -f database/data/*.json
 	rm -f database/structs/*.go
 
-refresh-data: clean-data fetch-data convert-data
+refresh-data: clean-data fetch-data convert-data clean-time
+
+run:
+	go run main.go
+
+refresh-run: refresh-models refresh-data run
+
+clean-restart: refresh-models refresh-data docker-clean docker-swapi run
+ 
