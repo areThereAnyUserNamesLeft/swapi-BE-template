@@ -10,7 +10,7 @@ docker-rm:
 docker-clean: docker-stop docker-rm
 
 install-json-to-go:
-	curl "https://raw.githubusercontent.com/mholt/json-to-go/master/json-to-go.js" --output "json-to-go.js" ; 
+	curl "https://raw.githubusercontent.com/areThereAnyUserNamesLeft/json-to-go/master/json-to-go.js" --output "json-to-go.js" ; 
 	sed -i "s/function jsonToGo(json, typename, flatten = true)/function jsonToGo(json, typename, flatten = false)/g" "json-to-go.js"; \
 
 fetch-models:
