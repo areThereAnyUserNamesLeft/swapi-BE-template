@@ -1,5 +1,3 @@
-database/json-to-go.js
-database/database/data/*
-database/database/structs/*
-database/models/json/*
-database/models/structs/*
+json-to-go.js
+database/data/*
+database/structs/*
