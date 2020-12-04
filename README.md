@@ -10,7 +10,7 @@ https://swapi.dev/ and before that https://swapi.co are great APIs for this and 
 
 ## How to use
 
-Look at `database/makefile` and `database/main.go` for a full understanding of what is going on.
+Look at `makefile` and `main.go` for a full understanding of what is going on.
 
 To get a container running: - `make fresh-run` - the first time you run it.
 
