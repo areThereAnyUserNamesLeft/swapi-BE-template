@@ -85,6 +85,16 @@ func InputData(ctx context.Context, db *mongo.Database) error {
 		}
 		fmt.Printf("%s - %s\n", f.Fields.Name, ir.InsertedID)
 	}
+	var transport structs.Transport
+	transportC := ReadIn("transport", "./database/data/transport.json", &transport, db)
+	for _, f := range transport {
+		ir, err := transportC.InsertOne(ctx, f)
+		if err != nil {
+			fmt.Printf("%s - %s\n", f.Fields.Name, "Insert Error")
+			return err
+		}
+		fmt.Printf("%s - %s\n", f.Fields.Name, ir.InsertedID)
+	}
 	var starships structs.Starships
 	starshipsC := ReadIn("startships", "./database/data/starships.json", &starships, db)
 	for _, f := range starships {
